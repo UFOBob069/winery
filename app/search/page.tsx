@@ -75,7 +75,7 @@ export default function SearchResults() {
       <div className="mx-auto max-w-7xl px-4 py-8">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-gray-900">
-            Search Results for "{query}"
+            Search Results for &ldquo;{query}&rdquo;
           </h1>
           <button
             onClick={() => router.push('/')}
@@ -120,7 +120,7 @@ export default function SearchResults() {
           </div>
         ) : (
           <div className="text-center text-gray-600">
-            <p>No wineries found matching "{query}"</p>
+            <p>No wineries found matching &ldquo;{query}&rdquo;</p>
             <Link href="/" className="mt-4 inline-block text-purple-600 hover:text-purple-700">
               Return to home page
             </Link>
