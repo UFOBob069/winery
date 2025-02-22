@@ -20,12 +20,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
         {/* Top Banner */}
-        <div className="bg-gradient-to-r from-purple-800 to-purple-600 py-3 px-4">
+        <div className="bg-gradient-to-r from-purple-800 to-purple-600 py-2 md:py-3 px-3 md:px-4">
           <div className="mx-auto max-w-7xl flex justify-between items-center">
-            <Link href="/" className="text-white font-bold text-xl tracking-tight hover:text-purple-200">
+            <Link href="/" className="text-white font-bold text-lg md:text-xl tracking-tight hover:text-purple-200">
               GoVisitWinery
             </Link>
-            <div className="flex gap-4">
+            <div className="flex gap-3 md:gap-4 text-sm md:text-base">
               <Link href="/login" className="text-white hover:text-purple-200">
                 Sign In
               </Link>

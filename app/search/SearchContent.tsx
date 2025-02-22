@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 interface Winery {
   id: string;
@@ -12,27 +14,9 @@ interface Winery {
   rating: number;
   imageUrl: string;
   description: string;
+  siteUrl?: string;
+  featured?: boolean;
 }
-
-// This will be replaced with actual API data later
-const featuredWineries: Winery[] = [
-  {
-    id: "1",
-    name: "Napa Valley Vineyards",
-    location: "Napa, California",
-    rating: 4.8,
-    imageUrl: "/images/placeholder-winery.jpg",
-    description: "Experience the finest wines in the heart of Napa Valley."
-  },
-  {
-    id: "2",
-    name: "Sonoma Wine Estate",
-    location: "Sonoma, California",
-    rating: 4.6,
-    imageUrl: "/images/placeholder-winery.jpg",
-    description: "Beautiful estate featuring premium wine tastings."
-  }
-];
 
 export default function SearchContent() {
   const searchParams = useSearchParams();
@@ -44,25 +28,47 @@ export default function SearchContent() {
 
   useEffect(() => {
     setMounted(true);
-    setQuery(searchParams.get('q') || '');
-  }, [searchParams]);
+    const searchQuery = searchParams.get('q') || '';
+    setQuery(searchQuery);
 
-  useEffect(() => {
-    if (!mounted) return;
-
-    const performSearch = () => {
+    const searchWineries = async () => {
+      if (!searchQuery) return;
+      
       setIsLoading(true);
-      const results = featuredWineries.filter(
-        winery =>
-          winery.name.toLowerCase().includes(query.toLowerCase()) ||
-          winery.location.toLowerCase().includes(query.toLowerCase())
-      );
-      setSearchResults(results);
-      setIsLoading(false);
+      try {
+        const wineriesRef = collection(db, 'winery');
+        // Get all wineries and filter client-side for now
+        const querySnapshot = await getDocs(wineriesRef);
+        
+        const wineries = querySnapshot.docs
+          .map(doc => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              name: data.name,
+              location: data.location,
+              rating: data.rating,
+              imageUrl: data.imageUrl,
+              description: data.description,
+              siteUrl: data.siteUrl
+            } as Winery;
+          })
+          .filter(winery => 
+            winery.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            winery.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            winery.description.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+
+        setSearchResults(wineries);
+      } catch (error) {
+        console.error("Error searching wineries:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    performSearch();
-  }, [query, mounted]);
+    searchWineries();
+  }, [searchParams]);
 
   if (!mounted) {
     return null;
