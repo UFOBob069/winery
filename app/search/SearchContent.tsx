@@ -10,11 +10,20 @@ import { db } from '../lib/firebase';
 interface Winery {
   id: string;
   name: string;
-  location: string;
+  siteUrl?: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
   rating: number;
   imageUrl: string;
+  goodForCouples: boolean;
+  goodForGroups: boolean;
+  goodForFamilies: boolean;
+  petFriendly: boolean;
+  outdoorSeating: boolean;
+  liveMusic: boolean;
   description: string;
-  siteUrl?: string;
   featured?: boolean;
 }
 
@@ -37,7 +46,6 @@ export default function SearchContent() {
       setIsLoading(true);
       try {
         const wineriesRef = collection(db, 'winery');
-        // Get all wineries and filter client-side for now
         const querySnapshot = await getDocs(wineriesRef);
         
         const wineries = querySnapshot.docs
@@ -45,19 +53,32 @@ export default function SearchContent() {
             const data = doc.data();
             return {
               id: doc.id,
-              name: data.name,
-              location: data.location,
-              rating: data.rating,
-              imageUrl: data.imageUrl,
-              description: data.description,
-              siteUrl: data.siteUrl
+              name: data.name || '',
+              siteUrl: data.siteUrl || '',
+              phone: data.phone || '',
+              address: data.address || '',
+              city: data.city || '',
+              state: data.state || '',
+              rating: data.rating || 0,
+              imageUrl: data.imageUrl || '',
+              goodForCouples: data.goodForCouples || false,
+              goodForGroups: data.goodForGroups || false,
+              goodForFamilies: data.goodForFamilies || false,
+              petFriendly: data.petFriendly || false,
+              outdoorSeating: data.outdoorSeating || false,
+              liveMusic: data.liveMusic || false,
+              description: data.description || ''
             } as Winery;
           })
-          .filter(winery => 
-            winery.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            winery.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            winery.description.toLowerCase().includes(searchQuery.toLowerCase())
-          );
+          .filter(winery => {
+            const searchLower = searchQuery.toLowerCase();
+            return (
+              (winery.name?.toLowerCase() || '').includes(searchLower) ||
+              (winery.city?.toLowerCase() || '').includes(searchLower) ||
+              (winery.state?.toLowerCase() || '').includes(searchLower) ||
+              (winery.description?.toLowerCase() || '').includes(searchLower)
+            );
+          });
 
         setSearchResults(wineries);
       } catch (error) {
@@ -113,12 +134,11 @@ export default function SearchContent() {
                 </div>
                 <div className="p-4">
                   <h3 className="text-xl font-semibold text-gray-900">{winery.name}</h3>
-                  <p className="text-sm text-gray-600">{winery.location}</p>
+                  <p className="text-sm text-gray-600">{winery.city}, {winery.state}</p>
                   <div className="mt-2 flex items-center">
                     <span className="text-yellow-400">★</span>
                     <span className="ml-1 text-sm text-gray-600">{winery.rating}</span>
                   </div>
-                  <p className="mt-2 text-sm text-gray-600">{winery.description}</p>
                 </div>
               </Link>
             ))}

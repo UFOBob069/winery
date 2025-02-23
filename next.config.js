@@ -9,6 +9,9 @@ const nextConfig = {
       'example.com'
     ],
   },
+  swcMinify: true,
+  poweredByHeader: false,
+  reactStrictMode: true,
 }
 
 module.exports = nextConfig 
