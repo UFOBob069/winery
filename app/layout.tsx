@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     ],
   },
   verification: {
-    google: 'YOUR_ADSENSE_VERIFICATION_CODE', // Add your verification code here
+    google: 'ca-pub-0131222257759084', // Add your verification code here
   },
 };
 

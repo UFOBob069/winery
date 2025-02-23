@@ -35,26 +35,12 @@ export default function Home() {
           limit(6)
         );
         
-        console.log('Fetching featured wineries...'); // Debug log
         const querySnapshot = await getDocs(featuredQuery);
-        console.log('Query snapshot:', querySnapshot.size); // Debug log
-        
-        const wineries = querySnapshot.docs.map(doc => {
-          const data = doc.data();
-          console.log('Winery data:', data); // Debug log
-          return {
-            id: doc.id,
-            name: data.name,
-            location: data.location,
-            rating: data.rating,
-            imageUrl: data.imageUrl,
-            description: data.description,
-            siteUrl: data.siteUrl,
-            featured: data.featured
-          } as Winery;
-        });
+        const wineries = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        } as Winery));
 
-        console.log('Processed wineries:', wineries); // Debug log
         setFeaturedWineries(wineries);
       } catch (error) {
         console.error("Error fetching wineries:", error);
