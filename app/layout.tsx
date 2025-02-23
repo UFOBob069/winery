@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
-import GoogleAdsense from "@/components/GoogleAdsense";
+import GoogleAdsense from "./components/GoogleAdsense";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +11,12 @@ export const metadata: Metadata = {
   title: "GoVisitWinery.com",
   description: "Discover and explore the finest wineries near you",
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      {
+        url: '/favicon.ico',
+        sizes: 'any',
+      },
+    ],
   },
   verification: {
     google: 'YOUR_ADSENSE_VERIFICATION_CODE', // Add your verification code here
@@ -26,7 +31,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link 
+          rel="icon" 
+          href="/favicon.ico" 
+          type="image/x-icon"
+        />
+        <link 
+          rel="shortcut icon" 
+          href="/favicon.ico" 
+          type="image/x-icon"
+        />
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <GoogleAdsense />

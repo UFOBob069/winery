@@ -110,39 +110,42 @@ export default function Home() {
       </section>
 
       {/* Featured Wineries Section */}
-      <section className="mx-auto max-w-7xl px-4 py-8 md:py-16">
-        <h2 className="mb-6 md:mb-8 text-2xl md:text-3xl font-bold text-gray-900">Featured Wineries</h2>
-        {loading ? (
-          <div className="text-center py-8">Loading featured wineries...</div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 md:gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredWineries.map((winery) => (
-              <Link 
-                href={`/winery/${winery.id}`} 
-                key={winery.id}
-                className="group overflow-hidden rounded-lg shadow-lg transition-transform hover:scale-105"
-              >
-                <div className="relative h-40 md:h-48 w-full">
-                  <Image
-                    src={winery.imageUrl}
-                    alt={winery.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-3 md:p-4">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-900">{winery.name}</h3>
-                  <p className="text-xs md:text-sm text-gray-600">{winery.location}</p>
-                  <div className="mt-1 md:mt-2 flex items-center">
-                    <span className="text-yellow-400">★</span>
-                    <span className="ml-1 text-xs md:text-sm text-gray-600">{winery.rating}</span>
+      <section className="py-8 md:py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <h2 className="mb-8 md:mb-12 text-2xl md:text-3xl font-bold text-gray-900 text-center">
+            Featured Wineries
+          </h2>
+          {loading ? (
+            <div className="text-center">Loading featured wineries...</div>
+          ) : (
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredWineries.map((winery) => (
+                <Link
+                  href={`/winery/${winery.id}`}
+                  key={winery.id}
+                  className="group overflow-hidden rounded-lg shadow-lg transition-transform hover:scale-105"
+                >
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={winery.imageUrl}
+                      alt={winery.name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                  <p className="mt-1 md:mt-2 text-xs md:text-sm text-gray-600">{winery.description}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+                  <div className="p-4">
+                    <h3 className="text-xl font-semibold text-gray-900">{winery.name}</h3>
+                    <p className="text-sm text-gray-600">{winery.location}</p>
+                    <div className="mt-2 flex items-center">
+                      <span className="text-yellow-400">★</span>
+                      <span className="ml-1 text-sm text-gray-600">{winery.rating}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Features Section */}
